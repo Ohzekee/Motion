@@ -1,0 +1,115 @@
+<template>
+  <style>
+    #root {
+      position: absolute;
+      inset: 0;
+      font-family: "EB Garamond", serif;
+      font-weight: 500;
+      --ink-light: #f4ebd0;
+      --ink-dark: #14234a;
+      --accent: #7a5a12;
+    }
+    .line {
+      position: absolute;
+      left: 0;
+      width: 1920px;
+      text-align: center;
+      line-height: 1.12;
+    }
+    .line span {
+      display: inline-block;
+    }
+    #w-door {
+      top: 838px;
+      font-size: 72px;
+      color: var(--ink-light);
+    }
+    #w-hither {
+      top: 870px;
+      font-size: 80px;
+      color: var(--ink-dark);
+    }
+    #w-sea {
+      top: 828px;
+      font-size: 72px;
+      color: var(--ink-dark);
+    }
+    #w-holy {
+      top: 700px;
+      font-size: 112px;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+    }
+    #w-lord {
+      top: 832px;
+      font-size: 64px;
+      color: var(--ink-dark);
+    }
+    #w-was {
+      top: 914px;
+      font-size: 44px;
+      color: var(--ink-dark);
+    }
+  </style>
+  <div id="root" data-composition-id="words" data-width="1920" data-height="1080">
+    <div id="w-door" class="line clip" data-start="0.2" data-duration="3.15" data-track-index="1">
+      <div><span>Behold,</span> <span>a</span> <span>door</span></div>
+      <div><span>was</span> <span>opened</span> <span>in</span> <span>heaven</span></div>
+    </div>
+    <div id="w-hither" class="line clip" data-start="4.5" data-duration="1.95" data-track-index="2">
+      <span id="w-hither-in">Come up hither</span>
+    </div>
+    <div id="w-sea" class="line clip" data-start="11.3" data-duration="3.0" data-track-index="3">
+      <div><span>a</span> <span>sea</span> <span>of</span> <span>glass</span></div>
+      <div><span>like</span> <span>unto</span> <span>crystal</span></div>
+    </div>
+    <div id="w-holy" class="line clip" data-start="15.0" data-duration="5.0" data-track-index="4">
+      <span>HOLY,</span> <span>HOLY,</span> <span>HOLY</span>
+    </div>
+    <div id="w-lord" class="line clip" data-start="15.6" data-duration="4.4" data-track-index="5">
+      <span id="w-lord-in">Lord God Almighty</span>
+    </div>
+    <div id="w-was" class="line clip" data-start="17.0" data-duration="3.0" data-track-index="6">
+      <span>which</span> <span>was,</span> <span>and</span> <span>is,</span> <span>and</span> <span>is</span>
+      <span>to</span> <span>come</span>
+    </div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const words = (sel) => Array.from(document.querySelectorAll(sel + " span"));
+
+      // Rev 4:1 — per word, blur to sharp, no translate
+      const door = words("#w-door");
+      door.forEach((el, i) => {
+        tl.fromTo(el, { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.35, ease: "expo.out" }, 0.25 + i * 0.08);
+      });
+      tl.to(door, { opacity: 0, filter: "blur(8px)", duration: 0.22, ease: "power2.in" }, 3.1);
+
+      // Rev 4:1 — the whole line blurs in
+      tl.fromTo("#w-hither-in", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power4.out" }, 4.55);
+      tl.to("#w-hither-in", { opacity: 0, filter: "blur(8px)", duration: 0.2, ease: "power2.in" }, 6.2);
+
+      // Rev 4:6 — per word, from the sea's own tint to ink
+      const sea = words("#w-sea");
+      sea.forEach((el, i) => {
+        tl.fromTo(el, { opacity: 0, color: "#9db7c2" }, { opacity: 1, color: "#14234a", duration: 0.3, ease: "power2.out" }, 11.35 + i * 0.09);
+      });
+      tl.to(sea, { opacity: 0, filter: "blur(8px)", duration: 0.22, ease: "power2.in" }, 14.05);
+
+      // Rev 4:8 — the cry, each word landing, then held still to the end
+      const holy = words("#w-holy");
+      holy.forEach((el, i) => {
+        tl.fromTo(el, { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.4, ease: "expo.out" }, 15.05 + i * 0.22);
+      });
+      tl.fromTo("#w-lord-in", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "power4.out" }, 15.7);
+      const was = words("#w-was");
+      was.forEach((el, i) => {
+        tl.fromTo(el, { opacity: 0, color: "#9db7c2" }, { opacity: 1, color: "#14234a", duration: 0.3, ease: "power2.out" }, 17.05 + i * 0.08);
+      });
+      tl.set({}, {}, 20);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["words"] = tl;
+    })();
+  </script>
+</template>
